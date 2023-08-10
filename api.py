@@ -8,7 +8,6 @@ import polyline
 from geopy.distance import geodesic
 import location
 import emission
-from shapely import LineString
 
 #%%
 app = FastAPI()
@@ -182,65 +181,24 @@ def route(origin: str, destination: str):
 
 
 #%%
+if "__name__" == "__main__":
 
-origin = "Amsterdam"
-destination = "Munich"
+    origin = "Amsterdam"
+    destination = "Munich"
 
-q = "city_origin==@origin and city_destination==@destination"
+    q = "city_origin==@origin and city_destination==@destination"
 
-# flights = flight_routes.query(q)
-# if flights.shape[0] == 0:
-#     flight_route = []
-# else:
-#     # Calculate great-circle path
-#     origin_coords = flights.iloc[0][
-#         ["airport_latitude_origin", "airport_longitude_origin"]
-#     ]
-#     destination_coords = flights.iloc[0][
-#         ["airport_latitude_destination", "airport_longitude_destination"]
-#     ]
+    flights = flight_routes.query(q)
 
-#     flight_route = []
+    trains = train_routes.query(q)
+    train_route = polyline.decode(trains.iloc[0].coords)
 
-#     # Calculate great-circle path
-#     bearing = get_bearing(*origin_coords, *destination_coords)
-#     total_distance = geodesic(origin_coords, destination_coords).miles
-
-#     # Calculate points along the great-circle path
-#     for i in np.linspace(0, 1, 10):
-#         distance = i * total_distance
-#         point = geodesic(miles=distance).destination(origin_coords, bearing)
-#         flight_route.append((point.latitude, point.longitude))
-
-# cars = car_routes.query(q)
-
-# if cars.shape[0] == 0:
-#     car_route = []
-# else:
-#     car_route = polyline.decode(cars.iloc[0].coords)
-
-# car = cars.iloc[0]
-# car_route = polyline.decode(car.coords)
-# car_time = int(car.duration / 60)
-
-# car_emission = emission.Car("petrol")
-# car_co2 = car_emission.co2(car.distance, location.route_countries(car_route))
-
-# car_co2 = f"{car_co2[0]} - {car_co2[1]} kg"
-
-buses = bus_routes.query(q).sort_values("distance")
-if buses.shape[0] == 0:
-    bus_route = []
-else:
+    buses = bus_routes.query(q).sort_values("distance")
     bus_route = polyline.decode(buses.iloc[0].coords)
 
-# trains = train_routes.query(q)
-
-# if trains.shape[0] == 0:
-#     train_route = []
-# else:
-#     train_route = polyline.decode(trains.iloc[0].coords)
-
-#%%
-
-# %%
+    cars = car_routes.query(q)
+    car = cars.iloc[0]
+    car_route = polyline.decode(car.coords)
+    car_time = int(car.duration / 60)
+    car_emission = emission.Car("petrol")
+    car_co2 = car_emission.co2(car.distance, location.route_countries(car_route))

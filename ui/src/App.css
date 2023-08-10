@@ -1,0 +1,40 @@
+#root {
+  height: 100vh;
+}
+
+.App {
+  height: 100vh;
+}
+
+.leaflet-attribution-flag {
+  display: none !important;
+}
+
+.leaflet-container {
+  height: 100vh;
+}
+
+.control-panel {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 1000;
+  width: 350px;
+  border: 1px solid #aaa;
+  background-color: #ffffff88;
+  padding: 1em;
+  font-size: 0.9em;
+}
+
+.control-panel > * {
+  margin: 0.5em auto;
+}
+
+.control-panel #trip-info {
+  background-color: #fff;
+  padding: 0.5em;
+}
+
+.select {
+  z-index: 1000;
+}

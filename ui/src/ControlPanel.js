@@ -77,7 +77,7 @@ function ControlPanel({ setOrigin, origin, setSelectedDest, setRoutes, setSummar
         setOrigin(selectedOption.value);
         setSelectedDest(null);
         setRoutes({});
-        setSummary("Select destination")
+        setSummary([])
     }
 
     const labels = summary.map(item => item.mode);
